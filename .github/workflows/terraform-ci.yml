@@ -56,8 +56,8 @@ jobs:
           export ARM_SUBSCRIPTION_ID="4275b7ef-d10b-4b46-a5ad-e5ff0a1dd9c5"
           export ARM_TENANT_ID="$$sp_tenant"
 
-     # - name: Run Terraform init
-     #   run: terraform init
+      - name: Run Terraform init
+        run: terraform init
 
       # Runs a single command using the runners shell
       - name: Run Terraform validate
