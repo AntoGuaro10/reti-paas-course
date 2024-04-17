@@ -34,7 +34,21 @@ jobs:
           sudo apt install terraform
       - name: check tf version
         run: terraform --version
-        
+
+  azure_authentication_with_sp:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: using az credential
+        env:
+          sp_appid: ${{ secrets.TF_SP_APPID }}
+          sp_secret: ${{ secrets.TF_SP_SECRET }}
+          sp_tenant: ${{ vars.AZ_TENANT }}
+        run: 
+          az login --service-principal -u $sp_appid -p $sp_secret --tenant $sp_tenant
+
   terraform_push:
     # The type of runner that the job will run on
     runs-on: ubuntu-20.04
@@ -44,7 +58,7 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
 
-      - name: Terraform init
+      - name: Run Terraform init
         run: terraform init
 
       # Runs a single command using the runners shell
