@@ -51,10 +51,10 @@ jobs:
           sp_tenant: ${{ vars.AZ_TENANT }}
           # az login --service-principal -u $sp_appid -p $sp_secret --tenant $sp_tenant
         run: |
-          export ARM_CLIENT_ID="$$sp_appid"
-          export ARM_CLIENT_SECRET="$$sp_secret"
+          export ARM_CLIENT_ID="$sp_appid"
+          export ARM_CLIENT_SECRET="$sp_secret"
           export ARM_SUBSCRIPTION_ID="4275b7ef-d10b-4b46-a5ad-e5ff0a1dd9c5"
-          export ARM_TENANT_ID="$$sp_tenant"
+          export ARM_TENANT_ID="$sp_tenant"
 
       - name: Run Terraform init
         run: terraform init
