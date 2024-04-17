@@ -20,6 +20,6 @@ variable "location" {
 
 variable "vm-password" {
   description = "Admin password for users"
-  default = "PaaSc0urs3"
+  default = "PaaSc0urs3#2"
   sensitive = true
 }
