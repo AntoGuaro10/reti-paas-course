@@ -12,3 +12,14 @@ variable "storgaeaccount-tfstate" {
   description = "Defalt storageaccount used for tfstate"
   default = "paasstgaccount1"
 }
+
+variable "location" {
+  description = "Default location"
+  default = "North Europe"
+}
+
+variable "vm-password" {
+  description = "Admin password for users"
+  default = "PaaSc0urs3#2"
+  sensitive = true
+}
