@@ -1,0 +1,59 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: nslabel
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  namespace: nslabel
+  name: nginx-1
+  labels:
+    scope: paas
+    version: beta
+spec:
+  containers:
+  - name: nginx-beta
+    image: nginx:1.14.2
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  namespace: nslabel
+  name: nginx-2
+  labels:
+    scope: paas
+    version: stable
+spec:
+  containers:
+  - name: nginx-beta
+    image: nginx:1.14.2
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  namespace: nslabel
+  name: client-pod
+  labels:
+    scope: iaas
+    version: alpha
+spec:
+  containers:
+  - name: client-alpha
+    image: busybox:1.28
+    command: ["/bin/sleep", "99999"]
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  namespace: nslabel
+  name: busy-pod
+  labels:
+    scope: paas
+    version: stable
+spec:
+  containers:
+  - name: busy-stable
+    image: busybox:1.28
+    command: ["/bin/sleep", "99999"]
