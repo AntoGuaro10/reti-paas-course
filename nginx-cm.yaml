@@ -1,0 +1,65 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-cm
+  namespace: default
+data:
+  index.html: |
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <title>Welcome to custom NGINX deployment</title>
+    </head>
+    <body>
+        <p>This is really cool!<p>
+    </body>
+    </html>
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: envvar-config
+  namespace: default
+data:
+  allowed: '"true"'
+  app-version: rc-1
+  lives: "3"
+  JAVA_HOME: /opt/jdk-11/bin/java
+  APP_DIR: /usr/lib/my-dir
+---
+# ENV vars from cm
+apiVersion: v1
+kind: Pod
+metadata:
+  name: dapi-test-pod
+  namespace: default
+spec:
+  containers:
+    - name: test-container
+      image: registry.k8s.io/busybox
+      command: [ "/bin/sh", "-c", "env" ]
+      envFrom:
+      - configMapRef:
+          name: envvar-config
+  restartPolicy: Never
+
+---
+# Custom file configuration
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-custom-pod
+  namespace: default
+spec:
+  containers:
+    - name: test-nginx
+      image: nginx:1.14.2
+      command: [ "/bin/sh", "-c", "ls /var/www/html" ]
+      volumeMounts:
+      - name: nginx-cfg-volume
+        mountPath: /var/www/html/index.html
+  volumes:
+    - name: nginx-cfg-volume
+      configMap:
+        name: nginx-cm
+  restartPolicy: Always
