@@ -66,6 +66,9 @@ resource "azurerm_kubernetes_cluster" "paas-cluster" {
     owner               = "Guarisco"
     scope               = "paas-course"
   }
+  lifecycle {
+    ignore_changes = all
+  }
 }
 
 resource "azurerm_kubernetes_cluster_node_pool" "application-np" {
@@ -84,5 +87,8 @@ resource "azurerm_kubernetes_cluster_node_pool" "application-np" {
   tags = {
     owner               = "Guarisco"
     scope               = "paas-course"
+  }
+  lifecycle {
+    ignore_changes = all
   }
 }

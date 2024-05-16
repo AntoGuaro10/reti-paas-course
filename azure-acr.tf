@@ -4,11 +4,6 @@ resource "azurerm_container_registry" "paas-acr" {
   location            = var.location
   sku                 = "Basic"
 
-  retention_policy = {
-    enabled           = true
-    days              = 7
-  }
-
   tags = {
     owner             = "Guarisco"
     scope             = "paas-course"
