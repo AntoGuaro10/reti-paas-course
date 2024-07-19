@@ -10,6 +10,13 @@ resource "azurerm_role_assignment" "aks_network_contributor" {
   role_definition_name = "Network Contributor"
 }
 
+resource "azurerm_role_assignment" "aks_acr_puller" {
+  scope                = azurerm_container_registry.paas-acr.id
+  principal_id         = azurerm_user_assigned_identity.aks_identity.principal_id
+  role_definition_name = "AcrPull"
+  skip_service_principal_aad_check = true
+}
+
 resource "azurerm_kubernetes_cluster" "paas-cluster" {
   name                  = "paasaks1"
   location              = var.location
@@ -59,6 +66,9 @@ resource "azurerm_kubernetes_cluster" "paas-cluster" {
     owner               = "Guarisco"
     scope               = "paas-course"
   }
+  lifecycle {
+    ignore_changes = all
+  }
 }
 
 resource "azurerm_kubernetes_cluster_node_pool" "application-np" {
@@ -77,5 +87,8 @@ resource "azurerm_kubernetes_cluster_node_pool" "application-np" {
   tags = {
     owner               = "Guarisco"
     scope               = "paas-course"
+  }
+  lifecycle {
+    ignore_changes = all
   }
 }

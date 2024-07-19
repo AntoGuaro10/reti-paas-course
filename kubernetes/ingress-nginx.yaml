@@ -1,0 +1,34 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx-ingress
+  namespace: ingress-ns
+  annotations:
+    nginx.org/proxy-connect-timeout: "30s"
+    nginx.org/server-snippets: |
+      location /rest {
+        return 302 /api;
+      }   
+spec:
+  tls:
+  - hosts:
+    - nginx.example.com
+    secretName: ingress-secret
+  rules:
+  - host: nginx.example.com
+    http:
+      paths:
+      - path: /api
+        pathType: Prefix
+        backend:
+          service:
+            name: api-svc
+            port:
+              number: 80
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: wildcard-svc
+            port:
+              number: 80
